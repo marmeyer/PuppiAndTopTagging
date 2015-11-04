@@ -14,8 +14,16 @@ PuppiAndTopTaggingHists::PuppiAndTopTaggingHists(Context & ctx, const string & d
    matched = book<TH1F>( "MatchedTopJets", "p_{T}", 100, 0,2000);
    tagged = book<TH1F>( "TaggedTopJets", "p_{T} (tagged)", 100, 0,2000);
 
+   matched_genp_eta = book<TH1F>( "MatchedTopJets_genp_eta", "#eta gen", 50, -5,5);
+
    matched_genp = book<TH1F>( "MatchedTopJets_genp", "p_{T} gen", 100, 0,2000);
    tagged_genp = book<TH1F>( "TaggedTopJets_genp", "p_{T} gen (tagged)", 100, 0,2000);
+
+   matched_genp_higheta = book<TH1F>( "MatchedTopJets_genp_higheta", "p_{T} gen, |#eta| >1 ", 100, 0,2000);
+   tagged_genp_higheta = book<TH1F>( "TaggedTopJets_genp_higheta", "p_{T} gen (tagged), |#eta| > 1 ", 100, 0,2000);
+
+   matched_genp_loweta = book<TH1F>( "MatchedTopJets_genp_loweta", "p_{T} gen, |#eta| < 1", 100, 0,2000);
+   tagged_genp_loweta = book<TH1F>( "TaggedTopJets_genp_loweta", "p_{T} gen (tagged), |#eta| < 1 ", 100, 0,2000);
    
    matched_eta = book<TH1F>( "MatchedTopJets_eta", "#eta", 50, -5,5);
    tagged_eta = book<TH1F>( "TaggedTopJets_eta", "#eta (tagged)", 50, -5,5);
@@ -55,6 +63,9 @@ void PuppiAndTopTaggingHists::fill(const Event & event){
                    }
              }
          if (index!=100) matched_genp->Fill(matchedgenparts.at(index).pt(),weight);
+         if (index!=100 && fabs(tp.eta())> 1) matched_genp_higheta->Fill(matchedgenparts.at(index).pt(),weight);
+         if (index!=100 && fabs(tp.eta())< 1) matched_genp_loweta->Fill(matchedgenparts.at(index).pt(),weight);
+         if (index!=100) matched_genp_eta->Fill(matchedgenparts.at(index).eta(),weight);
          matched->Fill(tp.pt(),weight);
          matched_phi->Fill(tp.phi(),weight);
          matched_eta->Fill(tp.eta(),weight);
@@ -62,6 +73,8 @@ void PuppiAndTopTaggingHists::fill(const Event & event){
          if (passes_id(tp, event, topjetid)) 
             {
                if (index!=100) tagged_genp->Fill(matchedgenparts.at(index).pt(), weight);
+               if (index!=100 && fabs(tp.eta())> 1) tagged_genp_higheta->Fill(matchedgenparts.at(index).pt(),weight);
+               if (index!=100 && fabs(tp.eta())< 1) tagged_genp_loweta->Fill(matchedgenparts.at(index).pt(),weight);
                tagged->Fill(tp.pt(),weight);
                tagged_eta->Fill(tp.eta(),weight);
                tagged_phi->Fill(tp.phi(),weight);

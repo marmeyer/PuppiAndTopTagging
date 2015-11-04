@@ -308,6 +308,7 @@ obj/PuppiAndTopTaggingModule.o: src/PuppiAndTopTaggingModule.cxx \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/common/include/Utils.h \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/common/include/TTbarGen.h \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/common/include/CollectionProducer.h \
+ /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/common/include/MCWeight.h \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingSelections.h \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingHists.h \
  /afs/desy.de/user/m/mameyer/xxl-af-cms/CMSSW_7_4_7/src/UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingGenHists.h \

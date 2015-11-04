@@ -25,7 +25,7 @@ public:
 
 
 protected:
-   TH1F *matched, *tagged, *matched_genp, *tagged_genp, *matched_eta, *tagged_eta, *matched_phi, *tagged_phi, *matched_npv, *tagged_npv;
+   TH1F *matched, *tagged, *matched_genp, *matched_genp_eta, *matched_genp_higheta, *matched_genp_loweta, *tagged_genp_higheta, *tagged_genp_loweta,*tagged_genp, *matched_eta, *tagged_eta, *matched_phi, *tagged_phi, *matched_npv, *tagged_npv;
 
    TopJetId topjetid;
 

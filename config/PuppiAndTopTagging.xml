@@ -22,11 +22,17 @@
 <!ENTITY PROOFdir  "/nfs/dust/cms/user/mameyer/PROOF">
 ]>
 
+<!--
+   <ConfigParse NEventsBreak="0" LastBreak="0" FileSplit="10" />
+   <ConfigSGE RAM ="2" DISK ="2" Mail="XXXX@desy.de" Notification="as" Workdir="workdir"/>
+-->
+
+
 <JobConfiguration JobName="PuppiAndTopTaggingJob" OutputLevel="INFO">
     <Library Name="libSUHH2PuppiAndTopTagging"/>
     <Package Name="SUHH2PuppiAndTopTagging.par" />
 
-<!--   <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" > -->
+ <!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" > -->
   <Cycle Name="uhh2::AnalysisModuleRunner"  RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="&PROOFdir;/" ProofNodes="10" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" > 
 
     <!--TO DO: CALCULATE LUMI-->
@@ -74,10 +80,10 @@
      &QCD_Pt2400to3200;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>     
+   </InputData>   
    
    
-   <InputData Lumi="374.61" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt300to470" Cacheable="False">
+ <InputData Lumi="374.61" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt300to470" Cacheable="False">
      &QCD_Pt300to470;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
@@ -143,7 +149,7 @@
      <Item Name="GenParticleCollection" Value="GenParticles" /> 
      <Item Name="readTrigger" Value="false" />
      
-     <Item Name="additionalBranches" Value="patJetsCmsTopTagPuppiPacked_daughters patJetsHepTopTagPuppiPacked_daughters patJetsHepTopTagCHSPacked_daughters" />
+     <Item Name="additionalBranches" Value="patJetsCmsTopTagPuppiPacked_daughters patJetsHepTopTagPuppiPacked_daughters patJetsHepTopTagCHSPacked_daughters patJetsAk8CHSJetsSoftDropPacked_daughters patJetsAk8PuppiJetsSoftDropPacked_daughters" />
   
      <Item Name="AnalysisModule" Value="PuppiAndTopTaggingModule" /> 
      <Item Name="use_sframe_weight" Value="false" />

@@ -38,6 +38,8 @@ void PuppiAndTopTaggingGenHists::fill(const Event & event){
       }
    DeltaR_top_topjet -> Fill(DeltaR_AntitopMin, weight);
    DeltaR_top_topjet -> Fill(DeltaR_TopMin, weight);
+
+   
    
 }
 

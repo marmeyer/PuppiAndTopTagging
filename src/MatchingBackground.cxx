@@ -29,31 +29,60 @@ bool MatchingBackground::process(uhh2::Event & event) {
 
    for (const auto & genp: *event.genparticles) 
       {
-         if ((abs(genp.pdgId())<=5 || genp.pdgId()==21)) genp_QuarksGluon.push_back(genp);
+         if ((abs(genp.pdgId())<=5 || genp.pdgId()==21)) 
+            {
+               if (genp.pdgId() !=0)
+                  {
+                     genp_QuarksGluon.push_back(genp);
+                  }
+            }
       }
    sort_by_pt<GenParticle>(genp_QuarksGluon);
    
-   GenParticle genp = genp_QuarksGluon.at(0);
+   if (genp_QuarksGluon.size()>0) 
+      {
+         GenParticle genp = genp_QuarksGluon.at(0);
   
-   for(unsigned int i = 0; i <topjets.size(); i++){
-      {
-         TopJet tp = topjets.at(i);
-         DeltaR = deltaR(genp, tp);
-         if (DeltaR < DeltaRmin) 
+         for(unsigned int i = 0; i <topjets.size(); i++){
             {
-               DeltaRmin = DeltaR;
-               index_topjet = i;
+               TopJet tp = topjets.at(i);
+               DeltaR = deltaR(genp, tp);
+               if (DeltaR < DeltaRmin) 
+                  {
+                     DeltaRmin = DeltaR;
+                     index_topjet = i;
+                  }
             }
-      }
-   }
-   if (DeltaRmin<1.0 && genp.pt()>150) 
-      {
-         matchedtopjets.emplace_back(topjets.at(index_topjet));//TO DO:::matching und pT muss fuer jede collection angepasstr werden!!!
-         matchedgenparts.emplace_back(genp);
+         }
+         if (DeltaRmin<1.0 && genp.pt()>150) 
+            {
+               matchedtopjets.emplace_back(topjets.at(index_topjet));//TO DO:::matching und pT muss fuer jede collection angepasstr werden!!!
+               matchedgenparts.emplace_back(genp);
+            }
+     DeltaRmin = 100;
+     index_topjet = 100;
+     GenParticle genp1 = genp_QuarksGluon.at(1);
+     for(unsigned int i = 0; i <topjets.size(); i++){
+        {
+           TopJet tp = topjets.at(i);
+           DeltaR = deltaR(genp1, tp);
+           if (DeltaR < DeltaRmin) 
+              {
+                 DeltaRmin = DeltaR;
+                 index_topjet = i;
+              }
+        }
+     }
+     if (DeltaRmin<1.0 && genp1.pt()>150) 
+        {
+           matchedtopjets.emplace_back(topjets.at(index_topjet));//TO DO:::matching und pT muss fuer jede collection angepasstr werden!!!
+           matchedgenparts.emplace_back(genp1);
+        }
+         
       }
    event.set(h_matchedtopjets, move(matchedtopjets));
    event.set(h_matchedgenparts, move(matchedgenparts));
-
+   
    return true;                                   
 }
              

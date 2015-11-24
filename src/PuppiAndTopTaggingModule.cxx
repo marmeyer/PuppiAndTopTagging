@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <memory>
 
@@ -16,6 +17,7 @@
 
 #include "UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingSelections.h"
 #include "UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingHists.h"
+#include "UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingGenHistsBackground.h"
 #include "UHH2/PuppiAndTopTagging/include/PuppiAndTopTaggingGenHists.h"
 #include "UHH2/PuppiAndTopTagging/include/MatchingSignal.h"
 #include "UHH2/PuppiAndTopTagging/include/MatchingBackground.h"
@@ -81,6 +83,7 @@ private:
    std::unique_ptr<PuppiAndTopTaggingHists> efficiency_heptt_highpT_01_Puppi_hists,  efficiency_heptt_highpT_01_CHS_hists, efficiency_heptt_highpT_03_Puppi_hists, efficiency_heptt_highpT_03_CHS_hists, efficiency_heptt_highpT_1_Puppi_hists,efficiency_heptt_highpT_1_CHS_hists,efficiency_heptt_highpT_3_Puppi_hists,efficiency_heptt_highpT_3_CHS_hists,efficiency_heptt_highpT_10_Puppi_hists,efficiency_heptt_highpT_10_CHS_hists,efficiency_heptt_lowpT_01_Puppi_hists,efficiency_heptt_lowpT_01_CHS_hists,efficiency_heptt_lowpT_03_Puppi_hists,efficiency_heptt_lowpT_03_CHS_hists,efficiency_heptt_lowpT_1_Puppi_hists,efficiency_heptt_lowpT_1_CHS_hists,efficiency_heptt_lowpT_3_Puppi_hists,efficiency_heptt_lowpT_3_CHS_hists,efficiency_heptt_lowpT_10_Puppi_hists,efficiency_heptt_lowpT_10_CHS_hists;
    std::unique_ptr<TopJetHists> Ak8SoftDropCHS_hists;
    std::unique_ptr<TopJetHists> Ak8SoftDropPuppi_hists;
+   std::unique_ptr<PuppiAndTopTaggingGenHistsBackground> genhist_bg_CHS;
 };
 
 
@@ -159,7 +162,7 @@ PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
    //SoftDrop
    efficiency_Ak8SoftDropPuppi_hists.reset(new PuppiAndTopTaggingHists(ctx,"efficiency_Ak8SoftDropPuppi", "patJetsAk8PuppiJetsSoftDropPacked_daughters"));
    efficiency_Ak8SoftDropPuppi_hists->set_TopJetId(SoftDrop); 
-   efficiency_Ak8SoftDropCHS_hists.reset(new PuppiAndTopTaggingHists(ctx,"efficiency_Ak8SoftDropCHS", "patJetsAk8PuppiJetsSoftDropPacked_daughters"));
+   efficiency_Ak8SoftDropCHS_hists.reset(new PuppiAndTopTaggingHists(ctx,"efficiency_Ak8SoftDropCHS", "patJetsAk8CHSJetsSoftDropPacked_daughters"));
    efficiency_Ak8SoftDropCHS_hists->set_TopJetId(SoftDrop); 
    
 
@@ -230,11 +233,11 @@ PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
    hepttPuppi_beforecuts_hists.reset(new TopJetHists(ctx, "h_heptopjetsPuppi",4,"patJetsHepTopTagPuppiPacked_daughters"));
    hepttCHS_corr_hists.reset(new TopJetHists(ctx, "h_heptopjetsCHS_corr",4,"patJetsHepTopTagCHSPacked_daughters"));
    hepttPuppi_corr_hists.reset(new TopJetHists(ctx, "h_heptopjetsPuppi_corr",4,"patJetsHepTopTagPuppiPacked_daughters"));
-   Ak8SoftDropCHS_hists.reset(new TopJetHists(ctx, "Ak8SoftDropCHS_matched",4,"patJetsAk8CHSJetsSoftDropPacked_daughters"));
-   Ak8SoftDropPuppi_hists.reset(new TopJetHists(ctx, "Ak8SoftDropPuppi_matched",4,"patJetsAk8PuppiJetsSoftDropPacked_daughters"));
-
+   Ak8SoftDropCHS_hists.reset(new TopJetHists(ctx, "Ak8SoftDropCHS_matched",4,"matched_topjets_patJetsAk8CHSJetsSoftDropPacked_daughters"));
+   Ak8SoftDropPuppi_hists.reset(new TopJetHists(ctx, "Ak8SoftDropPuppi_matched",4,"matched_topjets_patJetsAk8PuppiJetsSoftDropPacked_daughters"));
    
-}
+   genhist_bg_CHS.reset(new PuppiAndTopTaggingGenHistsBackground(ctx, "genhist_bg_CHS","matched_topjets_patJetsHepTopTagCHSPacked_daughters"));
+}                                                                                      
 
 
 bool PuppiAndTopTaggingModule::process(Event & event) {  
@@ -243,6 +246,7 @@ bool PuppiAndTopTaggingModule::process(Event & event) {
 
    HepTTPuppicollectionprod->process(event);
    HepTTCHScollectionprod->process(event);
+
    Ak8SoftDropPuppicollectionprod->process(event);
    Ak8SoftDropCHScollectionprod->process(event);
    
@@ -266,6 +270,7 @@ bool PuppiAndTopTaggingModule::process(Event & event) {
       match_bg_hepttCHS->process(event);
       match_bg_Ak8SoftDropPuppi->process(event);
       match_bg_Ak8SoftDropCHS->process(event);
+      genhist_bg_CHS->fill(event);
    }
    else 
       {
@@ -292,7 +297,38 @@ bool PuppiAndTopTaggingModule::process(Event & event) {
 
    efficiency_hepttRunIPuppi_hists->fill(event);
    efficiency_hepttRunICHS_hists->fill(event);
+
+   efficiency_heptt_highpT_01_Puppi_hists->fill(event);
+   efficiency_heptt_highpT_01_CHS_hists->fill(event);
    
+
+   efficiency_heptt_highpT_03_Puppi_hists->fill(event);
+   efficiency_heptt_highpT_03_CHS_hists->fill(event);
+   
+   efficiency_heptt_highpT_1_Puppi_hists->fill(event);
+   efficiency_heptt_highpT_1_CHS_hists->fill(event);
+   
+   efficiency_heptt_highpT_3_Puppi_hists->fill(event);
+   efficiency_heptt_highpT_3_CHS_hists->fill(event);
+   
+   efficiency_heptt_highpT_10_Puppi_hists->fill(event);
+   efficiency_heptt_highpT_10_CHS_hists->fill(event);
+   
+   efficiency_heptt_lowpT_01_Puppi_hists->fill(event);
+   efficiency_heptt_lowpT_01_CHS_hists->fill(event);
+   
+   efficiency_heptt_lowpT_03_Puppi_hists->fill(event);
+   efficiency_heptt_lowpT_03_CHS_hists->fill(event);
+   
+   efficiency_heptt_lowpT_1_Puppi_hists->fill(event);
+   efficiency_heptt_lowpT_1_CHS_hists->fill(event);
+   
+   efficiency_heptt_lowpT_3_Puppi_hists->fill(event);
+   efficiency_heptt_lowpT_3_CHS_hists->fill(event);
+   
+   efficiency_heptt_lowpT_10_Puppi_hists->fill(event);
+   efficiency_heptt_lowpT_10_CHS_hists->fill(event);
+      
    return true;
 
 }

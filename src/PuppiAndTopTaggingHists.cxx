@@ -15,7 +15,8 @@ PuppiAndTopTaggingHists::PuppiAndTopTaggingHists(Context & ctx, const string & d
    tagged = book<TH1F>( "TaggedTopJets", "p_{T} (tagged)", 100, 0,2000);
 
    matched_genp_eta = book<TH1F>( "MatchedTopJets_genp_eta", "#eta gen", 50, -5,5);
-
+   matched_genp2 = book<TH1F>( "MatchedTopJets_genp_eta2", "#eta gen", 50, -5,5);
+   
    matched_genp = book<TH1F>( "MatchedTopJets_genp", "p_{T} gen", 100, 0,2000);
    tagged_genp = book<TH1F>( "TaggedTopJets_genp", "p_{T} gen (tagged)", 100, 0,2000);
 
@@ -44,8 +45,14 @@ void PuppiAndTopTaggingHists::fill(const Event & event){
    
    double weight = event.weight;
    vector<TopJet> matchedtopjets = event.get(h_matchedtopjets);
+  
    vector<GenParticle> matchedgenparts = event.get(h_matchedgenparts);
    
+      for (unsigned int j=0; j<matchedgenparts.size(); j++)
+             {
+                matched_genp2->Fill(matchedgenparts.at(j).eta(),weight);
+             }
+
    for (unsigned int i=0; i<matchedtopjets.size(); i++)
       {
          TopJet tp = matchedtopjets.at(i);

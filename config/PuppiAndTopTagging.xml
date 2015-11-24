@@ -5,7 +5,7 @@
 <!ENTITY QCD_Pt1000to1400 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_1000to1400_Puppi.xml">     
 <!ENTITY QCD_Pt120to170 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_120to170_Puppi.xml">       
 <!ENTITY QCD_Pt1400to1800 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_1400to1800_Puppi.xml">      
-<!ENTITY QCD_Pt15to30 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_15to30_Puppi.xml">         
+<!ENTITY QCD_Pt15to30 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_15to30_Puppi.xml">       
 <!ENTITY QCD_Pt170to300 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_170to300_Puppi.xml">       
 <!ENTITY QCD_Pt1800to2400 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_1800to2400_Puppi.xml">      
 <!ENTITY QCD_Pt2400to3200 SYSTEM "../../common/datasets/RunII_50ns_v2/MC_QCD_Pt_2400to3200_Puppi.xml">      
@@ -32,18 +32,18 @@
     <Library Name="libSUHH2PuppiAndTopTagging"/>
     <Package Name="SUHH2PuppiAndTopTagging.par" />
 
- <!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" > -->
-  <Cycle Name="uhh2::AnalysisModuleRunner"  RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="&PROOFdir;/" ProofNodes="10" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" > 
+<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&SELdir;/" PostFix="" TargetLumi="3000" >
+<!-- <Cycle Name="uhh2::AnalysisModuleRunner"  RunMode="PROOF" ProofServer="lite://"  ProofWorkDir="&PROOFdir;/" ProofNodes="10" OutputDirectory="&SELdir;/" PostFix="withoutweight" TargetLumi="3000" > -->
 
     <!--TO DO: CALCULATE LUMI-->
  <InputData Lumi="202568" NEventsMax="-1" Type="MC" Version="ZprimeToTT_M-2000" Cacheable="False"> 
      &ZprimeToTT_M-2000;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>    
+   </InputData>  
 
 
-  <InputData Lumi="155146.47" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt1000to1400" Cacheable="False">
+<!-- <InputData Lumi="155146.47" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt1000to1400" Cacheable="False">
      &QCD_Pt1000to1400;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
@@ -94,13 +94,13 @@
      &QCD_Pt3200toInf;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>     
+   </InputData>   
    
-   <InputData Lumi="2991.71" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt470to600" Cacheable="False">
+   <InputData Lumi="2991.71" NEventsMax="100000" Type="MC" Version="QCD_Pt470to600" Cacheable="False">
      &QCD_Pt470to600;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>    
+   </InputData>   
    
    <InputData Lumi="10113.73" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt600to800" Cacheable="False">
      &QCD_Pt600to800;
@@ -113,26 +113,26 @@
      &QCD_Pt800to1000;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>  
+   </InputData>  -->
    
-  <InputData Lumi="1.25" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt80to120" Cacheable="False">
+<!--  <InputData Lumi="1.25" NEventsMax="100000;" Type="MC" Version="QCD_Pt80to120" Cacheable="False">
      &QCD_Pt80to120;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData>    
+   </InputData>    -->
    
    
-   <InputData Lumi="0.003" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt15to30" Cacheable="False">
+<!--  <InputData Lumi="0.003" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt15to30" Cacheable="False">
      &QCD_Pt15to30;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
    </InputData>     
    
-   <InputData Lumi="0.26" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt50to80" Cacheable="False">
+  <InputData Lumi="0.26" NEventsMax="&NEVT;" Type="MC" Version="QCD_Pt50to80" Cacheable="False">
      &QCD_Pt50to80;
      <InputTree Name="AnalysisTree" />
      <OutputTree Name="AnalysisTree" />
-   </InputData> 
+   </InputData> -->
    
    
             

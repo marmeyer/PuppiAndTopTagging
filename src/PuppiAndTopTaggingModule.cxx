@@ -61,7 +61,6 @@ private:
    
    std::unique_ptr<AnalysisModule> HepTTPuppicollectionprod;
    std::unique_ptr<AnalysisModule> HepTTCHScollectionprod;
-   std::unique_ptr<AnalysisModule> CMSTTPuppicollectionprod;
    std::unique_ptr<AnalysisModule> Ak8SoftDropPuppicollectionprod;
    std::unique_ptr<AnalysisModule> Ak8SoftDropCHScollectionprod;
    std::unique_ptr<AnalysisModule> lumi_weight; 
@@ -89,7 +88,7 @@ private:
 
 PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
    
-   is_signal = (ctx.get("dataset_version") == "ZprimeToTT_M-2000"); 
+   is_signal = (ctx.get("dataset_version") == "MC_TT_Mtt-700to1000_Puppi") || (ctx.get("dataset_version") == "MC_TT_Mtt-1000toInf_Puppi"); 
    lumi_weight.reset(new MCLumiWeight(ctx));
 
    
@@ -98,6 +97,10 @@ PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
 
    Ak8SoftDropPuppicollectionprod.reset(new CollectionProducer<TopJet>(ctx, "patJetsAk8PuppiJetsSoftDropPacked_daughters", "h_ak8SoftDropPuppi",TopJetId(PtEtaCut(150., 2.4))));
    Ak8SoftDropCHScollectionprod.reset(new CollectionProducer<TopJet>(ctx, "patJetsAk8CHSJetsSoftDropPacked_daughters", "h_ak8SoftDropCHS",TopJetId(PtEtaCut(150., 2.4))));
+
+   //Ca15PuppiJetsSoftDropcollectionprod.reset(new CollectionProducer<TopJet>(ctx, "patJetsCa15PuppiJetsSoftDropPacked_daughters", "h_ca15PuppiJetsSoftDrop",TopJetId(PtEtaCut(150., 2.4))));
+  
+ 
  
    ttgenprod.reset(new TTbarGenProducer(ctx, "ttbargen", false));
    
@@ -113,8 +116,11 @@ PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
    match_bg_Ak8SoftDropPuppi.reset(new MatchingBackground(ctx, "h_ak8SoftDropPuppi","patJetsAk8PuppiJetsSoftDropPacked_daughters"));
    match_bg_Ak8SoftDropCHS.reset(new MatchingBackground(ctx, "h_ak8SoftDropCHS", "patJetsAk8CHSJetsSoftDropPacked_daughters"));
 
+   //match_signal_Ca15SoftDropPuppi.reset(new MatchingSignal(ctx, "h_ca15PuppiJetsSoftDrop", "patJetsCa15PuppiJetsSoftDropPacked_daughters");
+   //match_bg_Ca15SoftDropPuppi.reset(new MatchingBackground(ctx, "h_ca15PuppiJetsSoftDrop", "patJetsCa15PuppiJetsSoftDropPacked_daughters");                                     
+                                        
 
-   topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(350., 2.4)))); 
+   topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(150., 2.4)))); 
    topjet_corrector.reset(new TopJetCorrector(JERFiles::Summer15_50ns_L123_AK8PFPuppi_MC));  
    heptopjetCHS_corrector.reset(new GenericTopJetCorrector(ctx, JERFiles::Summer15_50ns_L123_AK8PFPuppi_MC,"h_heptopjetsCHS"));
    heptopjetPuppi_corrector.reset(new GenericTopJetCorrector(ctx,JERFiles::Summer15_50ns_L123_AK8PFPuppi_MC,"h_heptopjetsPuppi"));
@@ -127,29 +133,29 @@ PuppiAndTopTaggingModule::PuppiAndTopTaggingModule(Context & ctx){
    const TopJetId HTTTopJetId = HEPTopTagV2(); 
    const TopJetId HTTTopJetIdRunI = HEPTopTag();
 
-   // const TopJetId HTTTopJetId_highpT_WP1_01 = AndId<TopJet>(HEPTopTagV2(80,170,0.16,-0.17,0.5), Tau32(0.48));
-   // const TopJetId HTTTopJetId_highpT_WP1_03 = AndId<TopJet>(HEPTopTagV2(120,180,0.18,-0.11,0.063), Tau32(0.59));
-   // const TopJetId HTTTopJetId_highpT_WP1_1 = AndId<TopJet>(HEPTopTagV2(80,190,0.47,-0.68,0.13), Tau32(0.6));
-   // const TopJetId HTTTopJetId_highpT_WP1_3 = AndId<TopJet>(HEPTopTagV2(100,180,0.26,-0.43,0.2), Tau32(0.77));
-   // const TopJetId HTTTopJetId_highpT_WP1_10 = AndId<TopJet>(HEPTopTagV2(60,200,0.5,-0.64,0.26), Tau32(0.92));
+   const TopJetId HTTTopJetId_highpT_WP1_01 = AndId<TopJet>(HEPTopTagV2(80,170,0.16,-0.17,0.5), Tau32(0.48));
+   const TopJetId HTTTopJetId_highpT_WP1_03 = AndId<TopJet>(HEPTopTagV2(120,180,0.18,-0.11,0.063), Tau32(0.59));
+   const TopJetId HTTTopJetId_highpT_WP1_1 = AndId<TopJet>(HEPTopTagV2(80,190,0.47,-0.68,0.13), Tau32(0.6));
+   const TopJetId HTTTopJetId_highpT_WP1_3 = AndId<TopJet>(HEPTopTagV2(100,180,0.26,-0.43,0.2), Tau32(0.77));
+   const TopJetId HTTTopJetId_highpT_WP1_10 = AndId<TopJet>(HEPTopTagV2(60,200,0.5,-0.64,0.26), Tau32(0.92));
 
-   // const TopJetId HTTTopJetId_lowpT_WP1_01 = AndId<TopJet>(HEPTopTagV2(70,170,0.48,-0.32,0.79), Tau32(0.53));
-   // const TopJetId HTTTopJetId_lowpT_WP1_03= AndId<TopJet>(HEPTopTagV2(120,180,0.17,-0.56,0.17), Tau32(0.65));
-   // const TopJetId HTTTopJetId_lowpT_WP1_1= AndId<TopJet>(HEPTopTagV2(120,330,0.25,-0.76,0.24), Tau32(0.71));
-   // const TopJetId HTTTopJetId_lowpT_WP1_3= AndId<TopJet>(HEPTopTagV2(110,300,0.35,-0.78,0.26), Tau32(0.97));
-   // const TopJetId HTTTopJetId_lowpT_WP1_10= AndId<TopJet>(HEPTopTagV2(80,300,0.5,-0.67,0.71), Tau32(0.91));
+   const TopJetId HTTTopJetId_lowpT_WP1_01 = AndId<TopJet>(HEPTopTagV2(70,170,0.48,-0.32,0.79), Tau32(0.53));
+   const TopJetId HTTTopJetId_lowpT_WP1_03= AndId<TopJet>(HEPTopTagV2(120,180,0.17,-0.56,0.17), Tau32(0.65));
+   const TopJetId HTTTopJetId_lowpT_WP1_1= AndId<TopJet>(HEPTopTagV2(120,330,0.25,-0.76,0.24), Tau32(0.71));
+   const TopJetId HTTTopJetId_lowpT_WP1_3= AndId<TopJet>(HEPTopTagV2(110,300,0.35,-0.78,0.26), Tau32(0.97));
+   const TopJetId HTTTopJetId_lowpT_WP1_10= AndId<TopJet>(HEPTopTagV2(80,300,0.5,-0.67,0.71), Tau32(0.91));
 
-   const TopJetId HTTTopJetId_highpT_WP1_01 = HEPTopTagV2(80,170,0.16,-0.17,0.5);
-   const TopJetId HTTTopJetId_highpT_WP1_03 = HEPTopTagV2(120,180,0.18,-0.11,0.063);
-   const TopJetId HTTTopJetId_highpT_WP1_1 = HEPTopTagV2(80,190,0.47,-0.68,0.13);
-   const TopJetId HTTTopJetId_highpT_WP1_3 = HEPTopTagV2(100,180,0.26,-0.43,0.2);
-   const TopJetId HTTTopJetId_highpT_WP1_10 = HEPTopTagV2(60,200,0.5,-0.64,0.26);
+   // const TopJetId HTTTopJetId_highpT_WP1_01 = HEPTopTagV2(80,170,0.16,-0.17,0.5);
+   // const TopJetId HTTTopJetId_highpT_WP1_03 = HEPTopTagV2(120,180,0.18,-0.11,0.063);
+   // const TopJetId HTTTopJetId_highpT_WP1_1 = HEPTopTagV2(80,190,0.47,-0.68,0.13);
+   // const TopJetId HTTTopJetId_highpT_WP1_3 = HEPTopTagV2(100,180,0.26,-0.43,0.2);
+   // const TopJetId HTTTopJetId_highpT_WP1_10 = HEPTopTagV2(60,200,0.5,-0.64,0.26);
 
-   const TopJetId HTTTopJetId_lowpT_WP1_01 = HEPTopTagV2(70,170,0.48,-0.32,0.79);
-   const TopJetId HTTTopJetId_lowpT_WP1_03= HEPTopTagV2(120,180,0.17,-0.56,0.17);
-   const TopJetId HTTTopJetId_lowpT_WP1_1= HEPTopTagV2(120,330,0.25,-0.76,0.24);
-   const TopJetId HTTTopJetId_lowpT_WP1_3= HEPTopTagV2(110,300,0.35,-0.78,0.26);
-   const TopJetId HTTTopJetId_lowpT_WP1_10= HEPTopTagV2(80,300,0.5,-0.67,0.71); 
+   // const TopJetId HTTTopJetId_lowpT_WP1_01 = HEPTopTagV2(70,170,0.48,-0.32,0.79);
+   // const TopJetId HTTTopJetId_lowpT_WP1_03= HEPTopTagV2(120,180,0.17,-0.56,0.17);
+   // const TopJetId HTTTopJetId_lowpT_WP1_1= HEPTopTagV2(120,330,0.25,-0.76,0.24);
+   // const TopJetId HTTTopJetId_lowpT_WP1_3= HEPTopTagV2(110,300,0.35,-0.78,0.26);
+   // const TopJetId HTTTopJetId_lowpT_WP1_10= HEPTopTagV2(80,300,0.5,-0.67,0.71); 
 
    const TopJetId SoftDrop = Type2TopTag(110,210);
    
